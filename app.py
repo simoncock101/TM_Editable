@@ -1,29 +1,34 @@
-```python
 import streamlit as st
 import numpy as np
 from PIL import Image
 from keras.models import load_model
-import platform
 
-st.write("Versión de Python:", platform.python_version())
+st.set_page_config(
+    page_title="Reconocimiento de Personas",
+    page_icon="👤",
+    layout="centered"
+)
 
 model = load_model("keras_model.h5")
 
-st.title("Reconocimiento de Personas")
-
+st.title("👤 Reconocimiento de Personas")
 st.write("Toma una fotografía para comprobar si hay una persona en la imagen.")
 
 with st.sidebar:
     st.subheader("Reconocimiento")
-    st.write("Esta aplicación utiliza un modelo entrenado en Teachable Machine para identificar si hay una persona en la imagen.")
+    st.write("Esta aplicación utiliza un modelo entrenado en Teachable Machine.")
 
-img_file_buffer = st.camera_input("Toma una foto")
+img_file_buffer = st.camera_input("📸 Toma una foto")
 
 if img_file_buffer is not None:
 
     img = Image.open(img_file_buffer).convert("RGB")
 
-    st.image(img, caption="Imagen capturada", use_container_width=True)
+    st.image(
+        img,
+        caption="Imagen capturada",
+        use_container_width=True
+    )
 
     img = img.resize((224, 224))
 
@@ -40,11 +45,12 @@ if img_file_buffer is not None:
 
     prediction = model.predict(data, verbose=0)
 
-    if prediction[0][0] > prediction[0][1]:
+    simon_probability = prediction[0][0]
+    nadie_probability = prediction[0][1]
+
+    if simon_probability > nadie_probability:
         st.success("👤 En la imagen hay una persona")
     else:
         st.info("🚫 En la imagen no hay nadie")
-```
-
 
 
