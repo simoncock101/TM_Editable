@@ -45,12 +45,10 @@ if img_file_buffer is not None:
 
     prediction = model.predict(data, verbose=0)
 
-    simon_probability = prediction[0][0]
-    nadie_probability = prediction[0][1]
+    simon = prediction[0][0]
+    nadie = prediction[0][1]
 
-    if simon_probability > nadie_probability:
+    if simon > nadie:
         st.success("👤 En la imagen hay una persona")
     else:
         st.info("🚫 En la imagen no hay nadie")
-
-
